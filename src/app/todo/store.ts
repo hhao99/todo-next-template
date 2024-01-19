@@ -7,6 +7,9 @@ export interface AppState {
     todos: Todo[]
     add: (task:string) => void
     remove: (id: string) => void
+    reset: () => void
+    toggle: (id: string) => void
+    update: (todo: Todo ) => void
 
 }
 
@@ -29,6 +32,15 @@ export const useStore = create<AppState>(
             set( (state: AppState)=> ({
                 todos: state.todos.filter( (todo: Todo) => todo.id !== id )
             }) )
-        }
+        },
+        reset: () => {
+            set( (state: AppState) => ({
+                todos: []
+            }))
+        },
+        toggle: (id)=> {
+            console.log('test')
+        },
+        update: (todo) => {}
     })
 )
