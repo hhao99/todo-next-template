@@ -17,7 +17,7 @@ export const useStore = create<AppState>(
         add: (task) => {
             set( (state: AppState)=> ({
                 todos: [
-                    state.todos,
+                    ...state.todos,
                     {
                         id: uuidv4(),
                         task
