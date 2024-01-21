@@ -11,7 +11,13 @@ export function TodoItem({todo}: {todo:ITodo}) {
       <tr>
         <td>{todo.id}</td>
         <td>{todo.task}</td>
-        <td><span onClick={e => toggle(todo.id)}>{todo.complete? 'ok': 'open'}</span></td>
+        <td>
+            <span onClick={e => toggle(todo.id)}>
+            <input type='checkbox' checked={todo.complete} />
+                {todo.complete? 'ok': 'open'}
+                
+            </span>
+        </td>
         <td><button onClick={e=> remove(todo.id)}>remove</button></td>
       </tr>
       
