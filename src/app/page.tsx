@@ -1,8 +1,9 @@
 
+import { Button } from '@nextui-org/react'
 export default function Home() {
   return (
     <main>
-      <h1>Todo Demo App</h1>
+      <Button color='prmary'>Todo Demo App</Button>
     </main>
     
   );
