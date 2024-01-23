@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useState} from 'react'
 import { useStore } from './store'
 import type { ITodo } from '@/types/todo'
 import type { IAppState } from '@/types/appstate'
@@ -27,16 +27,18 @@ import {
   
 export  function TodoList() {
     const { list, remove, toggle } = useStore( (state:IAppState)=> state)
-    
+   // todo list table related variables 
+    const [selectedKeys, setSelectedKeys]  = useState(new Set())
     const columns = [
       { label: 'Id', key: 'id' },
       { label: 'Task', key: 'task'},
       { label: 'Status', key: 'status'},
       { label: '-', key: 'action'}
     ]
+
+
   const RemoveAlerDialog = ({id}:{id:string})=> {
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
-   
     return (
       <>
         <Button onPress={onOpen}>remove</Button>
@@ -71,7 +73,16 @@ export  function TodoList() {
     <div>
         <h1>Todo List</h1>
         <h5>{list.length} of task(s) to be done:</h5>
-        <Table className='table-auto'>
+        <Table aria-label='todo list table'
+          isStriped
+          selectionMode='multiple'
+          selectedKeys={selectedKeys}
+          onSelectionChange={ e=> {
+            console.log(selectedKeys)
+            setSelectedKeys(e)
+          }}
+          
+        >
             <TableHeader columns={columns}>
                 { (column)=> <TableColumn key={column.key}>{column.label}</TableColumn> }
             </TableHeader>
