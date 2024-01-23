@@ -1,48 +1,105 @@
+
+import React from 'react'
 import { useStore } from './store'
 import type { ITodo } from '@/types/todo'
 import type { IAppState } from '@/types/appstate'
 
+import {
+  Button,
+  // modal 
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  ModalContent,
+  useDisclosure,
+  // table
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  Switch
+} from "@nextui-org/react";
 
-export function TodoItem({todo}: {todo:ITodo}) {
-    const { remove, toggle } = useStore( (state:IAppState) => state)
 
-
-    return (
-      <tr>
-        <td>{todo.id}</td>
-        <td>{todo.task}</td>
-        <td>
-            <span onClick={e => toggle(todo.id)}>
-            <input type='checkbox' checked={todo.complete} />
-                {todo.complete? 'ok': 'open'}
-                
-            </span>
-        </td>
-        <td><button onClick={e=> remove(todo.id)}>remove</button></td>
-      </tr>
-      
-    );
-  }
   
 export  function TodoList() {
-    const { list } = useStore( (state:IAppState)=> state)
+    const { list, remove, toggle } = useStore( (state:IAppState)=> state)
+    
+    const columns = [
+      { label: 'Id', key: 'id' },
+      { label: 'Task', key: 'task'},
+      { label: 'Status', key: 'status'},
+      { label: '-', key: 'action'}
+    ]
+  const RemoveAlerDialog = ({id}:{id:string})=> {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure()
+   
+    return (
+      <>
+        <Button onPress={onOpen}>remove</Button>
+        <Modal aria-label='remove dialog'
+          isOpen={isOpen} 
+          onOpenChange={onOpenChange}>
+          <ModalContent>
+            { (onClose) =>
+            (
+             <>
+              <ModalHeader>Todo Remove Dialog</ModalHeader>
+              <ModalBody>
+                <h3>Are you want to delete the todo: {id}</h3>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button color="danger" onPress={e=> {remove(id); onClose()}}>
+                  Remove!
+                </Button>
+              </ModalFooter>
+              </> 
+            )}
+          </ModalContent>
+
+        </Modal>
+      </>
+    )
+  }
   return (
     <div>
         <h1>Todo List</h1>
         <h5>{list.length} of task(s) to be done:</h5>
-        <table className='table-auto'>
-            <thead>
-                <th>ID</th>
-                <th>Task</th>
-                <th>status</th>
-                <th>action</th>
-            </thead>
-            <tbody>
-            {list && list.map( (todo: ITodo) => <TodoItem key={todo.id} todo={todo}/>  )}
+        <Table className='table-auto'>
+            <TableHeader columns={columns}>
+                { (column)=> <TableColumn key={column.key}>{column.label}</TableColumn> }
+            </TableHeader>
+            <TableBody items={list}>
+            { (item: ITodo)=> (
+              <TableRow key={item.id}>
+                <TableCell className='w-1/5'>
+                  <div className='w-[96px] text-nowrap text-ellipsis overflow-hidden'>{item.id}</div>
+                </TableCell>
+                <TableCell className='w-2/5'>{item.task}</TableCell>
+                <TableCell className='w-1/5'>
+                  <Switch 
+                    onChange={e=> toggle(item.id)} 
+                    isSelected={item.complete}>
+                      {item.complete?'ok':'open'}
+                      </Switch>
+                  </TableCell>
+                <TableCell className='w-1/5'>
+                  <div>
+                    <RemoveAlerDialog id={item.id}/>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
 
-            </tbody>
+            </TableBody>
             
-          </table>
+          </Table>
     </div>
     
   );
