@@ -27,6 +27,15 @@ export  function AddTodo() {
     }
     return (
       <div>
+        {/* The button to open modal */}
+    <label htmlFor="my_modal_6" className="btn">add new task</label>
+
+    {/* Put this part before </body> tag */}
+    <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+    <div className="modal" role="dialog">
+    <div className="modal-box">
+        <h3 className="font-bold text-lg">Add new Todo Task</h3>
+        <div>
         <label>New task:
             <input type='text' name='task' id='task'
                 onChange={ e=> setTask(e.target.value)}
@@ -40,8 +49,12 @@ export  function AddTodo() {
                 }}
             />
         </label>
-        
-      </div>
+        </div>
+        <div className="modal-action">
+        <label htmlFor="my_modal_6" className="btn">Close!</label>
+        </div>
+    </div>
+    </div></div>
       
     );
   }

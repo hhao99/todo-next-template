@@ -18,7 +18,7 @@ export function TodoItem({todo}: {todo:ITodo}) {
                 
             </span>
         </td>
-        <td><button onClick={e=> remove(todo.id)}>remove</button></td>
+        <td><button className='btn' onClick={e=> remove(todo.id)}>remove</button></td>
       </tr>
       
     );
@@ -30,12 +30,14 @@ export  function TodoList() {
     <div>
         <h1>Todo List</h1>
         <h5>{list.length} of task(s) to be done:</h5>
-        <table className='table-auto'>
+        <table className='table table-zebra'>
             <thead>
+              <tr>
                 <th>ID</th>
                 <th>Task</th>
                 <th>status</th>
                 <th>action</th>
+              </tr>
             </thead>
             <tbody>
             {list && list.map( (todo: ITodo) => <TodoItem key={todo.id} todo={todo}/>  )}
