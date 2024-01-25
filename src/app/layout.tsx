@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Flowbite, ThemeModeScript } from "flowbite-react";
+import { twMerge } from "tailwind-merge";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+      <ThemeModeScript />
+      </head>
+      <body className={twMerge("bg-gray-50 dark:bg-gray-900", inter.className)}>
+      <Flowbite>{children}</Flowbite>
+        </body>
     </html>
   );
 }
